@@ -131,13 +131,6 @@ datasource = {
 datasets: [{
 data: [],
 backgroundColor: [
-'#ffcd56',
-'#ff6384',
-'#36a2eb',
-'#f6a2eb',
-'#aaaaaa',
-'#fecdae',
-'#36a1ab'
 ]
 }],
 labels: [
@@ -166,8 +159,7 @@ var svg = d3.select('#d3-chart')
 .attr('width', width)
 .attr('height', height);
 
-var colors = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"];
-
+var colors = datasource.datasets[0].backgroundColor;
 var pie = d3.pie();
 
 var arc = d3.arc()
@@ -201,13 +193,14 @@ return labels[i];
 
 
 function getBudget() {
-axios.get('http://localhost:5000/budget')
+axios.get('http://localhost:5000/budgetDB')
 .then(function(res) {
 console.log(res.data)
-for(var i =0; i<res.data.budget.length; i++)
+for(var i =0; i<res.data.length; i++)
 {
-datasource.datasets[0].data[i] = res.data.budget[i].budget;
-datasource.labels[i] = res.data.budget[i].title;
+datasource.datasets[0].data[i] = res.data[i].budget;
+datasource.labels[i] = res.data[i].title;
+datasource.datasets[0].backgroundColor[i] = res.data[i].color;
 }
 createChart();
 createD3Chart();
